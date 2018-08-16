@@ -5,6 +5,7 @@ import com.capgemini.domain.CarEntity;
 import com.capgemini.domain.EmployeeEntity;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -42,16 +43,4 @@ public class CarDaoImpl extends AbstractDao<CarEntity, Long> implements CarDao {
         return query.getResultList();
     }
 
-    @Override
-    public CarEntity addCarToEmployee(CarEntity carEntity) {
-    return null;
-    }
-
-    @Override
-    public List<CarEntity> findCarByEmployee(EmployeeEntity employeeEntity) {
-        TypedQuery<CarEntity> query = entityManager.createQuery(
-                "select car from CarEntity car where employeeEntity.id member of car.carEntitySet '%')", CarEntity.class);
-        query.setParameter("employeeEntity", employeeEntity);
-        return query.getResultList();
-    }
 }

@@ -130,7 +130,7 @@ public class ClientTO {
             return this;
         }
 
-        public ClientTOBuilder withEmployeeTO(Set<ClientTO> clientTOSet) {
+        public ClientTOBuilder withClientTO(Set<ClientTO> clientTOSet) {
             this.clientTOSet.addAll(clientTOSet);
             return this;
         }

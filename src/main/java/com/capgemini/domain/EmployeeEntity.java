@@ -34,7 +34,6 @@ public class EmployeeEntity  extends AbstractEntity{
     @JoinColumn(name="AGENCY_ID")
     private AgencyEntity agencyEntity;
 
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="JOB_TITLE_ID")
     private EmployeePositionEntity employeePositionEntity;

@@ -13,8 +13,8 @@ public class AgencyTO {
     private Long id;
     private String contact;
     private AddressTO addressTO;
-    private Set<AgencyTO> startAgencyTOSet = new HashSet<>();
-    private Set<AgencyTO> endAgencyTOSet = new HashSet<>();
+    private Set<AgencyTO> startAgencyTOSet;
+    private Set<AgencyTO> endAgencyTOSet;
 
     public AgencyTO(Long id, String contact, AddressTO addressTO, Set<AgencyTO> startAgencyTOSet, Set<AgencyTO> endAgencyTOSet) {
         this.id = id;
@@ -35,7 +35,6 @@ public class AgencyTO {
     public AddressTO getAddressTO() {
         return addressTO;
     }
-
 
     public Set<AgencyTO> getStartAgencyTOSet() {
         return startAgencyTOSet;
@@ -66,7 +65,7 @@ public class AgencyTO {
             return this;
         }
 
-        public AgencyTOBuilder withStreet(String contact) {
+        public AgencyTOBuilder withContact(String contact) {
             this.contact = contact;
             return this;
         }
