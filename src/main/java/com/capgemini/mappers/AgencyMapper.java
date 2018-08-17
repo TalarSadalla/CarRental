@@ -17,9 +17,7 @@ public class AgencyMapper {
         if (agencyEntity == null)
             return null;
         AddressTO addressTOs = AddressMapper.toAddressTO(agencyEntity.getAddressEntity());
-        Set<AgencyTO> startAgencyTOSet = AgencyMapper.map2TOs(agencyEntity.getStartAgencyEntitySet());
-        Set<AgencyTO> endAgencyTOSet = AgencyMapper.map2TOs(agencyEntity.getEndAgencyEntitySet());
-        return new AgencyTOBuilder().withId(agencyEntity.getId()).withAddressId(addressTOs).withStartAgencyTO(startAgencyTOSet).withEndAgencyTO(endAgencyTOSet).withContact(agencyEntity.getContact())
+        return new AgencyTOBuilder().withId(agencyEntity.getId()).withAddressId(addressTOs).withContact(agencyEntity.getContact())
                 .build();
     }
 
@@ -30,10 +28,6 @@ public class AgencyMapper {
         AddressEntity addressEntity = AddressMapper.toAddressEntity(agencyTO.getAddressTO());
         agencyEntity.setAddressEntity(addressEntity);
         agencyEntity.setContact(agencyTO.getContact());
-        Set<AgencyEntity> startAgencyEntitySet = AgencyMapper.map2Entities(agencyTO.getStartAgencyTOSet());
-        Set<AgencyEntity> endAgencyEntitySet = AgencyMapper.map2Entities(agencyTO.getEndAgencyTOSet());
-        agencyEntity.setStartAgencyEntitySet(startAgencyEntitySet);
-        agencyEntity.setEndAgencyEntitySet(endAgencyEntitySet);
         agencyEntity.setContact(agencyTO.getContact());
         return agencyEntity;
     }

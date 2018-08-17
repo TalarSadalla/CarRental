@@ -35,10 +35,7 @@ public class ClientEntity extends AbstractEntity {
     @Column(nullable = false, length = 15)
     private String phoneNumber;
 
-    @OneToMany(targetEntity = RentalEntity.class, mappedBy = "clientEntity", cascade = CascadeType.ALL)
-    private Set<ClientEntity> clientEntitySet = new HashSet<>();
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ADDRESS_ID")
     private AddressEntity addressEntity;
 
@@ -102,11 +99,4 @@ public class ClientEntity extends AbstractEntity {
         this.addressEntity = addressEntity;
     }
 
-    public Set<ClientEntity> getClientEntitySet() {
-        return clientEntitySet;
-    }
-
-    public void setClientEntitySet(Set<ClientEntity> clientEntitySet) {
-        this.clientEntitySet = clientEntitySet;
-    }
 }

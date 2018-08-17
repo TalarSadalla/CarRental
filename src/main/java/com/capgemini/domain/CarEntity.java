@@ -4,11 +4,13 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.*;
 
-@Table
-@Entity(name = "CAR")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@EntityListeners({OnCreateListener.class, OnUpdateListener.class})
-public class CarEntity extends AbstractEntity {
+
+@Entity
+@Table(name = "CAR")
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@EntityListeners({OnCreateListener.class , OnUpdateListener.class})
+//extends AbstractEntity
+public class CarEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,17 +39,14 @@ public class CarEntity extends AbstractEntity {
     @Column(nullable = false, length = 11)
     private double milleage;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "AGENCY_ID")
     private AgencyEntity agencyEntity;
 
-    @OneToMany(targetEntity = RentalEntity.class, mappedBy = "carEntity", cascade = CascadeType.ALL)
-    private Set<CarEntity> carEntitySet = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinTable(name ="CAR_CARER",
-            joinColumns = { @JoinColumn(name = "car_id") },
-            inverseJoinColumns = { @JoinColumn(name = "employee_id")}
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "CAR_CARER",
+            joinColumns = {@JoinColumn(name = "car_id")},
+            inverseJoinColumns = {@JoinColumn(name = "employee_id")}
     )
     private Set<EmployeeEntity> EmployeeEntitySet = new HashSet<>();
 
@@ -117,14 +116,6 @@ public class CarEntity extends AbstractEntity {
 
     public void setAgencyEntity(AgencyEntity agencyEntity) {
         this.agencyEntity = agencyEntity;
-    }
-
-    public Set<CarEntity> getCarEntitySet() {
-        return carEntitySet;
-    }
-
-    public void setCarEntitySet(Set<CarEntity> carEntitySet) {
-        this.carEntitySet = carEntitySet;
     }
 
     public Set<EmployeeEntity> getEmployeeEntitySet() {

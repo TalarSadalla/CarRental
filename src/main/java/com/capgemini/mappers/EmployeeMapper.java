@@ -18,7 +18,7 @@ public class EmployeeMapper {
 		AddressTO addressTO = AddressMapper.toAddressTO(employeeEntity.getAddressEntity());
 		AgencyTO agencyTO = AgencyMapper.toAgencyTO(employeeEntity.getAgencyEntity());
 		EmployeePositionTO employeePositionTO = EmployeePositionMapper.toEmployeePositionTO(employeeEntity.getEmployeePositionEntity());
-		Set<CarTO> carTOs = CarMapper.map2TOs(employeeEntity.getCarEntitySet());
+		Set<CarTO> carTOs = CarMapper.map2TOs((List<CarEntity>) employeeEntity.getCarEntitySet());
 		return new EmployeeTOBuilder().withId(employeeEntity.getId()).withName(employeeEntity.getName())
 				.withSurname(employeeEntity.getSurname()).withDateOfBirth(employeeEntity.getDateOfBirth())
 				.withAddressTO(addressTO).withAgencyTO(agencyTO).withEmployeePositionTO(employeePositionTO)
@@ -33,23 +33,23 @@ public class EmployeeMapper {
 		AddressEntity addressEntity = AddressMapper.toAddressEntity(employeeTO.getAddressTO());
 		AgencyEntity agencyEntity = AgencyMapper.toAgencyEntity(employeeTO.getAgencyTO());
 		EmployeePositionEntity employeePositionEntity = EmployeePositionMapper.toEmployeePositionEntity(employeeTO.getEmployeePositionTO());
-		List<CarEntity> carEntities = (List<CarEntity>) CarMapper.map2Entities(employeeTO.getCarTOSet());
+		Set<CarEntity> carEntities =  CarMapper.map2Entities((List<CarTO>) employeeTO.getCarTOSet());
 		employeeEntity.setName(employeeTO.getName());
 		employeeEntity.setSurname(employeeTO.getSurname());
 		employeeEntity.setDateOfBirth(employeeTO.getDateOfBirth());
 		employeeEntity.setAddressEntity(addressEntity);
 		employeeEntity.setAgencyEntity(agencyEntity);
 		employeeEntity.setEmployeePositionEntity(employeePositionEntity);
-		employeeEntity.setCarEntitySet((Set<CarEntity>) carEntities);
+		employeeEntity.setCarEntitySet(carEntities);
 		return employeeEntity;
 	}
 
-	public static List<EmployeeTO> map2TOs(List<EmployeeEntity> employeeEntities) {
-		return employeeEntities.stream().map(EmployeeMapper::toEmployeeTO).collect(Collectors.toList());
+	public static Set<EmployeeTO> map2TOs(Set<EmployeeEntity> employeeEntities) {
+		return employeeEntities.stream().map(EmployeeMapper::toEmployeeTO).collect(Collectors.toSet());
 	}
 
-	public static List<EmployeeEntity> map2Entities(List<EmployeeTO> employeeTOs) {
-		return employeeTOs.stream().map(EmployeeMapper::toEmployeeEntity).collect(Collectors.toList());
+	public static Set<EmployeeEntity> map2Entities(Set<EmployeeTO> employeeTOs) {
+		return employeeTOs.stream().map(EmployeeMapper::toEmployeeEntity).collect(Collectors.toSet());
 	}
 
 }

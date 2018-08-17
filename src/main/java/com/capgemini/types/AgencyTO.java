@@ -86,12 +86,12 @@ public class AgencyTO {
         }
 
         public AgencyTO build() {
-            checkBeforeBuild(addressTO, contact, startAgencyTOSet, endAgencyTOSet);
+            checkBeforeBuild(contact);
             return new AgencyTO(id,contact, addressTO, startAgencyTOSet, endAgencyTOSet);
         }
 
-        private void checkBeforeBuild(AddressTO addressTO, String contact, Set<AgencyTO> startAgencySet,Set<AgencyTO> endAgencySet) {
-            if (CollectionUtils.isEmpty(startAgencySet)|| CollectionUtils.isEmpty(endAgencySet)|| addressTO == null || contact == null || contact.isEmpty()) {
+        private void checkBeforeBuild(String contact) {
+            if (contact == null || contact.isEmpty()) {
                 throw new RuntimeException("Incorrect agency to be created");
             }
         }

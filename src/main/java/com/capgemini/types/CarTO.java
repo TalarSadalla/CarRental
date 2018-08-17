@@ -162,12 +162,12 @@ public class CarTO {
         }
 
         public CarTO build() {
-            checkBeforeBuild(carType, brand, productionYear, color, engineCapacity, horsepower, milleage, agencyTO, carTOSet, employeeTOSet);
+            checkBeforeBuild(carType, brand, productionYear, color, engineCapacity, horsepower, milleage);
             return new CarTO(id, carType, brand, productionYear, color, engineCapacity, horsepower, milleage, agencyTO, carTOSet, employeeTOSet);
         }
 
-        private void checkBeforeBuild(String carType, String brand, Timestamp productionYear, String color, double engineCapacity, int horsepower, double milleage, AgencyTO agencyTO,Set<CarTO> carSet,Set<EmployeeTO> employeeSet) {
-            if (CollectionUtils.isEmpty(carSet) || CollectionUtils.isEmpty(employeeSet) || carType == null || carType.isEmpty() || brand == null || brand.isEmpty() || productionYear == null || color == null || color.isEmpty() || engineCapacity < 0 || engineCapacity > 30 || horsepower < 0 || horsepower > 3000 || milleage < 0 || agencyTO == null) {
+        private void checkBeforeBuild(String carType, String brand, Timestamp productionYear, String color, double engineCapacity, int horsepower, double milleage) {
+            if (carType == null || carType.isEmpty() || brand == null || brand.isEmpty() || productionYear == null || color == null || color.isEmpty() || engineCapacity < 0 || engineCapacity > 30 || horsepower < 0 || horsepower > 3000 || milleage < 0) {
                 throw new RuntimeException("Incorrect car to be created");
             }
 

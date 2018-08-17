@@ -124,12 +124,12 @@ public class EmployeeTO {
         }
 
         public EmployeeTO build() {
-            checkBeforeBuild(name, surname, dateOfBirth, addressTO, employeePositionTO, agencyTO, carTOSet);
+            checkBeforeBuild(name, surname, dateOfBirth);
             return new EmployeeTO(id, name, surname, dateOfBirth, addressTO, employeePositionTO, agencyTO, carTOSet);
         }
 
-        private void checkBeforeBuild(String name, String surname, Timestamp dateOfBirth, AddressTO addressTO, EmployeePositionTO employeePositionTO, AgencyTO agencyTO, Set<CarTO> carTOSet) {
-            if (CollectionUtils.isEmpty(carTOSet) || name == null || name.isEmpty() || surname == null || surname.isEmpty() || dateOfBirth == null || addressTO == null || employeePositionTO == null || agencyTO == null) {
+        private void checkBeforeBuild(String name, String surname, Timestamp dateOfBirth) {
+            if (name == null || name.isEmpty() || surname == null || surname.isEmpty() || dateOfBirth == null) {
                 throw new RuntimeException("Incorrect employee to be added");
             }
 

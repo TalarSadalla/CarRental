@@ -20,15 +20,10 @@ public class AgencyEntity extends AbstractEntity{
     @Column(nullable = false, length = 150)
     private String contact;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "ADDRESS_ID")
     private AddressEntity addressEntity;
 
-    @OneToMany(targetEntity = RentalEntity.class, mappedBy = "startAgencyEntity", cascade = CascadeType.ALL)
-    private Set<AgencyEntity> startAgencyEntitySet = new HashSet<>();
-
-    @OneToMany(targetEntity = RentalEntity.class, mappedBy = "endAgencyEntity", cascade = CascadeType.ALL)
-    private Set<AgencyEntity> endAgencyEntitySet = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -50,19 +45,4 @@ public class AgencyEntity extends AbstractEntity{
         this.addressEntity = addressEntity;
     }
 
-    public Set<AgencyEntity> getStartAgencyEntitySet() {
-        return startAgencyEntitySet;
-    }
-
-    public void setStartAgencyEntitySet(Set<AgencyEntity> startAgencyEntitySet) {
-        this.startAgencyEntitySet = startAgencyEntitySet;
-    }
-
-    public Set<AgencyEntity> getEndAgencyEntitySet() {
-        return endAgencyEntitySet;
-    }
-
-    public void setEndAgencyEntitySet(Set<AgencyEntity> endAgencyEntitySet) {
-        this.endAgencyEntitySet = endAgencyEntitySet;
-    }
 }

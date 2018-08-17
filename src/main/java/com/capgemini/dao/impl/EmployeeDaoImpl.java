@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class EmployeeDaoImpl extends AbstractDao<EmployeeEntity, Long> implements EmployeeDao {
@@ -20,19 +21,19 @@ public class EmployeeDaoImpl extends AbstractDao<EmployeeEntity, Long> implement
 
     @Override
     public EmployeeEntity editEmployee(EmployeeEntity employeeEntity) {
-       update(employeeEntity);
-       return employeeEntity;
+        update(employeeEntity);
+        return employeeEntity;
     }
 
     @Override
     public void deleteEmployee(Long employeeId) {
-    delete(employeeId);
+        delete(employeeId);
     }
 
     @Override
     public EmployeeEntity deleteEmployee(EmployeeEntity employeeEntity) {
-    delete(employeeEntity);
-    return employeeEntity;
+        delete(employeeEntity);
+        return employeeEntity;
     }
 
     @Override
@@ -48,7 +49,7 @@ public class EmployeeDaoImpl extends AbstractDao<EmployeeEntity, Long> implement
         TypedQuery<EmployeeEntity> query = entityManager.createQuery(
                 "select employee from EmployeeEntity e where employeeEntity.id =:id '%')", EmployeeEntity.class);
         query.setParameter("id", employeeEntity.getId());
-        EmployeeEntity foundEmployee=query.getSingleResult();
+        EmployeeEntity foundEmployee = query.getSingleResult();
         foundEmployee.setAgencyEntity(agencyEntity);
         update(foundEmployee);
     }
@@ -58,7 +59,7 @@ public class EmployeeDaoImpl extends AbstractDao<EmployeeEntity, Long> implement
         TypedQuery<EmployeeEntity> query = entityManager.createQuery(
                 "select employee from EmployeeEntity e where employeeEntity.id =:id '%')", EmployeeEntity.class);
         query.setParameter("id", employeeEntity.getId());
-        EmployeeEntity foundEmployee=query.getSingleResult();
+        EmployeeEntity foundEmployee = query.getSingleResult();
         foundEmployee.setAgencyEntity(null);
         update(foundEmployee);
         return foundEmployee;
@@ -85,7 +86,7 @@ public class EmployeeDaoImpl extends AbstractDao<EmployeeEntity, Long> implement
         TypedQuery<EmployeeEntity> query = entityManager.createQuery(
                 "select employee from EmployeeEntity e where employeeEntity.id =:id '%')", EmployeeEntity.class);
         query.setParameter("id", employeeEntity.getId());
-        EmployeeEntity foundEmployee=query.getSingleResult();
+        EmployeeEntity foundEmployee = query.getSingleResult();
         foundEmployee.getCarEntitySet().add(carEntity);
         update(foundEmployee);
     }

@@ -12,9 +12,11 @@ public interface CarDao extends Dao<CarEntity, Long> {
 
     void deleteCar (CarEntity carEntity);
 
-    void deleteCarById (Long carId);
+    void deleteCarById(Long carId);
 
     CarEntity editCar(CarEntity carEntity);
 
     List<CarEntity> findByTypeAndBrand(String type, String brand);
+
+    List<CarEntity> findByType(String type);
 }

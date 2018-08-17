@@ -17,13 +17,12 @@ public class ClientMapper {
 		if (clientEntity == null)
 			return null;
 
-		Set<ClientTO> clientTOs = map2TOs(clientEntity.getClientEntitySet());
 		AddressTO addressTOs = AddressMapper.toAddressTO(clientEntity.getAddressEntity());
 		return new ClientTOBuilder().withId(clientEntity.getId())
 				.withName(clientEntity.getName()).withSurname(clientEntity.getSurname())
 				.withEmail(clientEntity.getEmail()).withPhoneNumber(clientEntity.getPhoneNumber())
 				.withCreditCardNumber(clientEntity.getCreditCardNumber()).withDateOfBirth(clientEntity.getDateOfBirth())
-				.withClientTO(clientTOs).withAddressTO(addressTOs)
+				.withAddressTO(addressTOs)
 				.build();
 
 	}
@@ -31,7 +30,6 @@ public class ClientMapper {
 	public static ClientEntity toClientEntity(ClientTO clientTO) {
 		if (clientTO == null)
 			return null;
-		Set<ClientEntity> clientEntities = map2Entities(clientTO.getClientTOSet());
 		AddressEntity addressTOs = AddressMapper.toAddressEntity(clientTO.getAddressTO());
 		ClientEntity clientEntity = new ClientEntity();
 		clientEntity.setName(clientTO.getName());
@@ -40,7 +38,6 @@ public class ClientMapper {
 		clientEntity.setPhoneNumber(clientTO.getPhoneNumber());
 		clientEntity.setDateOfBirth(clientTO.getDateOfBirth());
 		clientEntity.setCreditCardNumber(clientTO.getCreditCardNumber());
-		clientEntity.setClientEntitySet(clientEntities);
 		clientEntity.setAddressEntity(addressTOs);
 		return clientEntity;
 	}

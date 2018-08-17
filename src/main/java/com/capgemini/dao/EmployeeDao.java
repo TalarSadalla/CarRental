@@ -7,6 +7,7 @@ import com.capgemini.domain.EmployeeEntity;
 
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Set;
 
 public interface EmployeeDao extends Dao<EmployeeEntity, Long> {
 

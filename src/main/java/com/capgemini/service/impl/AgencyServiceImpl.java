@@ -78,15 +78,15 @@ public class AgencyServiceImpl implements AgencyService {
     }
 
     @Override
-    public List<EmployeeTO> findAllEmployeesInAgency(AgencyTO agencyTO) {
+    public Set<EmployeeTO> findAllEmployeesInAgency(AgencyTO agencyTO) {
         if (agencyTO == null)
             return null;
         List<EmployeeEntity> employeeList=employeeDao.findAllEmployeeFromOneAgency(AgencyMapper.toAgencyEntity(agencyTO));
-        return EmployeeMapper.map2TOs(employeeList);
+        return EmployeeMapper.map2TOs((Set<EmployeeEntity>) employeeList);
     }
 
     @Override
-    public List<EmployeeTO> findAllEmployeesInAgencyForSpecificCar(EmployeeTO employeeTO, AgencyTO agencyTO, CarTO carTO) {
+    public Set<EmployeeTO> findAllEmployeesInAgencyForSpecificCar(EmployeeTO employeeTO, AgencyTO agencyTO, CarTO carTO) {
         return null;
     }
 }

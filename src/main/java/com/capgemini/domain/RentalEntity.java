@@ -21,19 +21,19 @@ public class RentalEntity extends AbstractEntity{
     @Column(nullable = false)
     private Timestamp endDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLIENT_ID",nullable = false)
     private ClientEntity clientEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "CAR_ID",nullable = false)
     private CarEntity carEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "START_AGENCY_ID",nullable = false)
     private AgencyEntity startAgencyEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "END_AGENCY_ID",nullable = false)
     private AgencyEntity endAgencyEntity;
 

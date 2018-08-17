@@ -6,15 +6,22 @@ import com.capgemini.types.CarTO;
 import com.capgemini.types.EmployeeTO;
 
 import java.util.List;
+import java.util.Set;
 
 public interface AgencyService {
 
     boolean addAgency(AgencyTO agencyTO);
+
     boolean deleteAgency(AgencyTO agencyTO);
+
     AgencyTO editAgency(AgencyTO updatedAgency);
+
     boolean addEmployeeToAgency(EmployeeTO employeeTO, AgencyTO agencyTO);
+
     EmployeeTO deleteEmployeeFromAgency(EmployeeTO employeeTO);
-    List<EmployeeTO> findAllEmployeesInAgency(AgencyTO agencyTO);
-    List<EmployeeTO> findAllEmployeesInAgencyForSpecificCar(EmployeeTO employeeTO, AgencyTO agencyTO, CarTO carTO);
+
+    Set<EmployeeTO> findAllEmployeesInAgency(AgencyTO agencyTO);
+
+    Set<EmployeeTO> findAllEmployeesInAgencyForSpecificCar(EmployeeTO employeeTO, AgencyTO agencyTO, CarTO carTO);
 
 }
