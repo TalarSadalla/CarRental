@@ -1,9 +1,8 @@
 package com.capgemini.service;
 
-import com.capgemini.types.AuthorTO;
-import com.capgemini.types.AuthorTO.AuthorTOBuilder;
-import com.capgemini.types.BookTO;
-import com.capgemini.types.BookTO.BookTOBuilder;
+
+import com.capgemini.types.EmployeeTO;
+import com.capgemini.types.EmployeeTO.EmployeeTOBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -19,62 +25,88 @@ import static org.junit.Assert.*;
 @SpringBootTest(properties = "spring.profiles.active=hsql")
 public class EmployeeServiceTest {
 
+
 	@Autowired
-	private BookService bookService;
+	private EmployeeService employeeService;
 
 	@Test
 	@Transactional
-	public void testShouldFindBookById() {
+	public void testShouldAddEmployee() {
+
 
 		// given
-		String bookTitle = "Herr Tadeusz";
-		AuthorTO author = new AuthorTOBuilder().withFirstName("Adam").withLastName("Mickiewicz").build();
-		BookTO panTadeuszBook = new BookTOBuilder().withTitle(bookTitle).withAuthor(author).build();
-		BookTO savedBook = bookService.saveBook(panTadeuszBook);
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = null;
+		Date dateOfBirth = null;
+		try {
+			date = dateFormat.parse("01/05/2016");
+			dateOfBirth=dateFormat.parse("17/06/1990");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		long time = date.getTime();
+		long employeeDateOfBirth=dateOfBirth.getTime();
 
-		// when
-		BookTO selectedBook = bookService.findBookById(savedBook.getId());
+		EmployeeTO employeeTO1 = new EmployeeTO.EmployeeTOBuilder().withName("Talar").withSurname("Sadalla")
+				.withDateOfBirth(new Timestamp(employeeDateOfBirth)).build();
 
-		// then
-		assertNotNull(selectedBook);
-		assertEquals(savedBook.getAuthors(), selectedBook.getAuthors());
-		assertEquals(savedBook.getTitle(), selectedBook.getTitle());
+		EmployeeTO employeeTO2 = new EmployeeTO.EmployeeTOBuilder().withName("Marcin").withSurname("Wojtowicz")
+				.withDateOfBirth(new Timestamp(employeeDateOfBirth)).build();
+
+		EmployeeTO employeeTO3 = new EmployeeTO.EmployeeTOBuilder().withName("Arek").withSurname("Mila")
+				.withDateOfBirth(new Timestamp(employeeDateOfBirth)).build();
+
+		//when
+
+		EmployeeTO savedEmployee1=employeeService.saveEmployee(employeeTO1);
+		EmployeeTO savedEmployee2=employeeService.saveEmployee(employeeTO2);
+		EmployeeTO savedEmployee3=employeeService.saveEmployee(employeeTO3);
+
+		//then
+
+		assertEquals("Arek",employeeService.findEmployeeById(employeeTO3).getName());
+		assertEquals("Wojtowicz",employeeService.findEmployeeById(employeeTO2).getSurname());
 	}
 
 	@Test
 	@Transactional
-	public void testShouldFindBooksById() {
+	public void testShouldDeleteEmployee() {
+
 
 		// given
-		String bookTitle = "Herr Tadeusz";
-		AuthorTO author = new AuthorTOBuilder().withFirstName("Adam").withLastName("Mickiewicz").build();
-		BookTO panTadeuszBook = new BookTOBuilder().withTitle(bookTitle).withAuthor(author).build();
-		bookService.saveBook(panTadeuszBook);
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = null;
+		Date dateOfBirth = null;
+		try {
+			date = dateFormat.parse("01/05/2016");
+			dateOfBirth=dateFormat.parse("17/06/1990");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		long time = date.getTime();
+		long employeeDateOfBirth=dateOfBirth.getTime();
 
-		// when
-		List<BookTO> selectedBooks = bookService.findBooksByTitle(bookTitle);
+		EmployeeTO employeeTO1 = new EmployeeTO.EmployeeTOBuilder().withName("Talar").withSurname("Sadalla")
+				.withDateOfBirth(new Timestamp(employeeDateOfBirth)).build();
 
-		// then
-		assertNotNull(selectedBooks);
-		assertFalse(selectedBooks.isEmpty());
-		assertTrue(selectedBooks.stream().anyMatch(b -> b.getTitle().equals(bookTitle)));
+		EmployeeTO employeeTO2 = new EmployeeTO.EmployeeTOBuilder().withName("Marcin").withSurname("Wojtowicz")
+				.withDateOfBirth(new Timestamp(employeeDateOfBirth)).build();
+
+		EmployeeTO employeeTO3 = new EmployeeTO.EmployeeTOBuilder().withName("Arek").withSurname("Mila")
+				.withDateOfBirth(new Timestamp(employeeDateOfBirth)).build();
+
+		//when
+
+		EmployeeTO savedEmployee1=employeeService.saveEmployee(employeeTO1);
+		EmployeeTO savedEmployee2=employeeService.saveEmployee(employeeTO2);
+		EmployeeTO savedEmployee3=employeeService.saveEmployee(employeeTO3);
+
+		employeeService.deleteEmployee(savedEmployee3);
+
+		//then
+
+		assertEquals(null,employeeService.findEmployeeById(savedEmployee3).getName());
 	}
 
-	@Test
-	@Transactional
-	public void testShouldFindBooksByAuthor() {
 
-		// given
-		String bookTitle = "Herr Tadeusz";
-		AuthorTO author = new AuthorTOBuilder().withFirstName("Adam").withLastName("Mickiewicz").build();
-		BookTO panTadeuszBook = new BookTOBuilder().withTitle(bookTitle).withAuthor(author).build();
-		BookTO savedBook = bookService.saveBook(panTadeuszBook);
-
-		// when
-		List<BookTO> selectedBooks = bookService.findBooksByAuthor(savedBook.getAuthors().iterator().next().getId());
-
-		// then
-		assertNotNull(selectedBooks);
-		assertTrue(selectedBooks.stream().anyMatch(b -> b.getTitle().equals(bookTitle)));
-	}
 }

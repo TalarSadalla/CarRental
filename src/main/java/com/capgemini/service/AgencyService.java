@@ -12,6 +12,8 @@ public interface AgencyService {
 
     boolean addAgency(AgencyTO agencyTO);
 
+    AgencyTO findAgencyById(AgencyTO agencyTO);
+
     boolean deleteAgency(AgencyTO agencyTO);
 
     AgencyTO editAgency(AgencyTO updatedAgency);

@@ -9,6 +9,8 @@ public interface EmployeeService {
 
     boolean addEmployee(EmployeeTO employeeTO);
 
+    EmployeeTO findEmployeeById(EmployeeTO employeeTO);
+
     EmployeeTO saveEmployee(EmployeeTO employeeTO);
 
     boolean deleteEmployee(EmployeeTO employeeTO);

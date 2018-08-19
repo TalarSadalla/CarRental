@@ -228,4 +228,173 @@ public class CarServiceTest {
         assertEquals("Black", selectedCar.getColor());
         assertEquals(carToUpdate.getMilleage(), selectedCar.getMilleage(),1.0);
     }
+
+    @Test
+    @Transactional
+    public void testShouldFindCarByType() {
+
+        // given
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = null;
+        try {
+            date = dateFormat.parse("01/05/2016");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long time = date.getTime();
+
+        CarTO car1 = new CarTOBuilder().withCarType("SEDAN").withBrand("Porsche").withColor("Blue").withEngineCapacity(1.6)
+                .withHorsepower(132).withMilleage(100.0).withProductionYear(new Timestamp(time)).build();
+
+        CarTO car2 = new CarTOBuilder().withCarType("SUV").withBrand("Porsche").withColor("Blue").withEngineCapacity(1.6)
+                .withHorsepower(132).withMilleage(100.0).withProductionYear(new Timestamp(time)).build();
+
+        CarTO car3 = new CarTOBuilder().withCarType("SEDAN").withBrand("Porsche").withColor("Blue").withEngineCapacity(1.6)
+                .withHorsepower(132).withMilleage(100.0).withProductionYear(new Timestamp(time)).build();
+
+        // when
+        CarTO savedCar1 = carService.saveCar(car1);
+        CarTO savedCar2 = carService.saveCar(car2);
+        CarTO savedCar3 = carService.saveCar(car3);
+
+        Set<CarTO> selectedCarSet = carService.findCarByType(car1);
+        // then
+
+
+        assertEquals(2, selectedCarSet.size());
+        assertEquals("SEDAN", selectedCarSet.iterator().next().getCarType());
+    }
+
+
+    @Test
+    @Transactional
+    public void testShouldFindCarByTypeAndBrand() {
+
+        // given
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = null;
+        try {
+            date = dateFormat.parse("01/05/2016");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long time = date.getTime();
+
+        CarTO car1 = new CarTOBuilder().withCarType("SEDAN").withBrand("Mazda").withColor("Blue").withEngineCapacity(1.6)
+                .withHorsepower(132).withMilleage(100.0).withProductionYear(new Timestamp(time)).build();
+
+        CarTO car2 = new CarTOBuilder().withCarType("COUPE").withBrand("Audi").withColor("Brown").withEngineCapacity(1.6)
+                .withHorsepower(170).withMilleage(353456.0).withProductionYear(new Timestamp(time)).build();
+
+        CarTO car3 = new CarTOBuilder().withCarType("SUV").withBrand("Mazda").withColor("Yellow").withEngineCapacity(1.6)
+                .withHorsepower(160).withMilleage(53143.0).withProductionYear(new Timestamp(time)).build();
+
+        CarTO car4 = new CarTOBuilder().withCarType("SUV").withBrand("Porsche").withColor("Blue").withEngineCapacity(1.6)
+                .withHorsepower(252).withMilleage(2200.0).withProductionYear(new Timestamp(time)).build();
+
+        CarTO car5 = new CarTOBuilder().withCarType("SEDAN").withBrand("Mercedes").withColor("Blue").withEngineCapacity(1.6)
+                .withHorsepower(184).withMilleage(100.0).withProductionYear(new Timestamp(time)).build();
+
+        CarTO car6 = new CarTOBuilder().withCarType("SUV").withBrand("Mazda").withColor("Red").withEngineCapacity(1.6)
+                .withHorsepower(145).withMilleage(1250.0).withProductionYear(new Timestamp(time)).build();
+
+        // when
+        CarTO savedCar1 = carService.saveCar(car1);
+        CarTO savedCar2 = carService.saveCar(car2);
+        CarTO savedCar3 = carService.saveCar(car3);
+        CarTO savedCar4 = carService.saveCar(car4);
+        CarTO savedCar5 = carService.saveCar(car5);
+        CarTO savedCar6 = carService.saveCar(car6);
+
+        Set<CarTO> selectedCarSet = carService.findCarByTypeAndBrand(car1);
+        // then
+
+
+        assertEquals(2, selectedCarSet.size());
+        assertEquals("SEDAN", selectedCarSet.iterator().next().getCarType());
+        assertEquals("Mazda", selectedCarSet.iterator().next().getBrand());
+    }
+
+
+    @Test
+    @Transactional
+    public void testShouldFindCarByEmployee() {
+
+        // given
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = null;
+        Date dateOfBirth = null;
+        try {
+            date = dateFormat.parse("01/05/2016");
+            dateOfBirth=dateFormat.parse("17/06/1990");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long time = date.getTime();
+        long employeeDateOfBirth=dateOfBirth.getTime();
+
+        EmployeeTO employeeTO1 = new EmployeeTOBuilder().withName("Talar").withSurname("Sadalla")
+                .withDateOfBirth(new Timestamp(employeeDateOfBirth)).build();
+
+        EmployeeTO employeeTO2 = new EmployeeTOBuilder().withName("Marcin").withSurname("Wojtowicz")
+                .withDateOfBirth(new Timestamp(employeeDateOfBirth)).build();
+
+        EmployeeTO employeeTO3 = new EmployeeTOBuilder().withName("Arek").withSurname("Mila")
+                .withDateOfBirth(new Timestamp(employeeDateOfBirth)).build();
+
+
+        CarTO car1 = new CarTOBuilder().withCarType("SEDAN").withBrand("Mazda").withColor("Blue").withEngineCapacity(1.6)
+                .withHorsepower(132).withMilleage(100.0).withProductionYear(new Timestamp(time)).build();
+
+        CarTO car2 = new CarTOBuilder().withCarType("COUPE").withBrand("Audi").withColor("Brown").withEngineCapacity(1.6)
+                .withHorsepower(170).withMilleage(353456.0).withProductionYear(new Timestamp(time)).build();
+
+        CarTO car3 = new CarTOBuilder().withCarType("SUV").withBrand("Mazda").withColor("Yellow").withEngineCapacity(1.6)
+                .withHorsepower(160).withMilleage(53143.0).withProductionYear(new Timestamp(time)).build();
+
+        CarTO car4 = new CarTOBuilder().withCarType("SUV").withBrand("Porsche").withColor("Blue").withEngineCapacity(1.6)
+                .withHorsepower(252).withMilleage(2200.0).withProductionYear(new Timestamp(time)).build();
+
+        CarTO car5 = new CarTOBuilder().withCarType("SEDAN").withBrand("Mercedes").withColor("Blue").withEngineCapacity(1.6)
+                .withHorsepower(184).withMilleage(100.0).withProductionYear(new Timestamp(time)).build();
+
+        CarTO car6 = new CarTOBuilder().withCarType("SUV").withBrand("Mazda").withColor("Red").withEngineCapacity(1.6)
+                .withHorsepower(145).withMilleage(1250.0).withProductionYear(new Timestamp(time)).build();
+
+        // when
+        CarTO savedCar1 = carService.saveCar(car1);
+        CarTO savedCar2 = carService.saveCar(car2);
+        CarTO savedCar3 = carService.saveCar(car3);
+        CarTO savedCar4 = carService.saveCar(car4);
+        CarTO savedCar5 = carService.saveCar(car5);
+        CarTO savedCar6 = carService.saveCar(car6);
+
+        EmployeeTO savedEmployee1=employeeService.saveEmployee(employeeTO1);
+        EmployeeTO savedEmployee2=employeeService.saveEmployee(employeeTO2);
+        EmployeeTO savedEmployee3=employeeService.saveEmployee(employeeTO3);
+
+        carService.addCarToEmployee(savedCar1,savedEmployee1);
+        carService.addCarToEmployee(savedCar3,savedEmployee1);
+        carService.addCarToEmployee(savedCar5,savedEmployee1);
+        carService.addCarToEmployee(savedCar1,savedEmployee2);
+        carService.addCarToEmployee(savedCar2,savedEmployee2);
+        carService.addCarToEmployee(savedCar3,savedEmployee2);
+        carService.addCarToEmployee(savedCar4,savedEmployee2);
+        carService.addCarToEmployee(savedCar5,savedEmployee3);
+        carService.addCarToEmployee(savedCar6,savedEmployee3);
+        carService.addCarToEmployee(savedCar3,savedEmployee3);
+        carService.addCarToEmployee(savedCar2,savedEmployee3);
+
+        Set<CarTO> carList=carService.findCarByEmployee(savedEmployee1,savedCar3);
+        Set<CarTO> carList2=carService.findCarByEmployee(savedEmployee3,savedCar4);
+
+        // then
+        assertEquals(1, carList.size());
+        assertEquals(0, carList2.size());
+        assertEquals("Mazda",carList.iterator().next().getBrand());
+        assertEquals("SUV",carList.iterator().next().getCarType());
+    }
+
+
+
 }

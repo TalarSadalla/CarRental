@@ -11,13 +11,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
     @Autowired
-    EmployeeDao employeeDao;
+    private EmployeeDao employeeDao;
 
     @Override
     public boolean addEmployee(EmployeeTO employeeTO) {
         if (employeeTO == null) return false;
         employeeDao.addEmployee(EmployeeMapper.toEmployeeEntity(employeeTO));
         return true;
+    }
+
+    @Override
+    public EmployeeTO findEmployeeById(EmployeeTO employeeTO) {
+        EmployeeEntity employeeEntity=EmployeeMapper.toEmployeeEntity(employeeTO);
+        return EmployeeMapper.toEmployeeTO(employeeDao.findEmployeeById(employeeEntity.getId()));
     }
 
     @Override

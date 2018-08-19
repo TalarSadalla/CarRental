@@ -42,6 +42,12 @@ public class AgencyServiceImpl implements AgencyService {
     }
 
     @Override
+    public AgencyTO findAgencyById(AgencyTO agencyTO) {
+        AgencyEntity agencyEntity = AgencyMapper.toAgencyEntity(agencyTO);
+        return AgencyMapper.toAgencyTO(agencyDao.findOne(agencyEntity.getId()));
+    }
+
+    @Override
     public boolean deleteAgency(AgencyTO agencyTO) {
         if (agencyTO == null) return false;
         AgencyEntity agencyEntity = AgencyMapper.toAgencyEntity(agencyTO);

@@ -20,10 +20,10 @@ import java.util.Set;
 public class CarServiceImpl implements CarService {
 
     @Autowired
-    CarDao carDao;
+    private CarDao carDao;
 
     @Autowired
-    EmployeeDao employeeDao;
+    private EmployeeDao employeeDao;
 
     @Override
     public boolean addCar(CarTO carTO) {
