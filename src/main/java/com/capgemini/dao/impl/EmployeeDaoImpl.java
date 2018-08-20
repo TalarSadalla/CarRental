@@ -4,6 +4,8 @@ import com.capgemini.dao.EmployeeDao;
 import com.capgemini.domain.AgencyEntity;
 import com.capgemini.domain.CarEntity;
 import com.capgemini.domain.EmployeeEntity;
+import com.capgemini.domain.EmployeePositionEntity;
+import com.capgemini.types.EmployeeSearchCriteriaTO;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -39,7 +41,7 @@ public class EmployeeDaoImpl extends AbstractDao<EmployeeEntity, Long> implement
     @Override
     public EmployeeEntity findEmployeeById(Long employeeId) {
         TypedQuery<EmployeeEntity> query = entityManager.createQuery(
-                "select employee from EmployeeEntity employee where employee.id=:employeeId '%')", EmployeeEntity.class);
+                "select e from EmployeeEntity e where e.id=:employeeId", EmployeeEntity.class);
         query.setParameter("employeeId", employeeId);
         return query.getSingleResult();
     }
@@ -47,7 +49,7 @@ public class EmployeeDaoImpl extends AbstractDao<EmployeeEntity, Long> implement
     @Override
     public void addEmployeeToAgency(EmployeeEntity employeeEntity, AgencyEntity agencyEntity) {
         TypedQuery<EmployeeEntity> query = entityManager.createQuery(
-                "select employee from EmployeeEntity e where employeeEntity.id =:id '%')", EmployeeEntity.class);
+                "select e from EmployeeEntity e where e.id =:id", EmployeeEntity.class);
         query.setParameter("id", employeeEntity.getId());
         EmployeeEntity foundEmployee = query.getSingleResult();
         foundEmployee.setAgencyEntity(agencyEntity);
@@ -57,7 +59,7 @@ public class EmployeeDaoImpl extends AbstractDao<EmployeeEntity, Long> implement
     @Override
     public EmployeeEntity removeEmployeeFromAgency(EmployeeEntity employeeEntity) {
         TypedQuery<EmployeeEntity> query = entityManager.createQuery(
-                "select employee from EmployeeEntity e where employeeEntity.id =:id '%')", EmployeeEntity.class);
+                "select e from EmployeeEntity e where e.id =:id", EmployeeEntity.class);
         query.setParameter("id", employeeEntity.getId());
         EmployeeEntity foundEmployee = query.getSingleResult();
         foundEmployee.setAgencyEntity(null);
@@ -66,37 +68,55 @@ public class EmployeeDaoImpl extends AbstractDao<EmployeeEntity, Long> implement
     }
 
     @Override
-    public List<EmployeeEntity> findAllEmployeeFromOneAgency(AgencyEntity agencyEntity) {
+    public List<EmployeeEntity> findAllEmployeeFromOneAgency(Long agencyId) {
         TypedQuery<EmployeeEntity> query = entityManager.createQuery(
-                "select employee from EmployeeEntity employee where employee.agency_id =:agencyId '%')", EmployeeEntity.class);
+                "select e from EmployeeEntity e where e.agencyEntity =:agencyId", EmployeeEntity.class);
+        query.setParameter("agencyId", agencyId);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<EmployeeEntity> findAllEmployeeFromOneAgencyForSpecificCar(AgencyEntity agencyEntity, CarEntity carEntity) {
+        TypedQuery<EmployeeEntity> query = entityManager.createQuery(
+                "select e from EmployeeEntity e where e.carEntitySet.id=:carId AND e.agencyEntity =:agencyId", EmployeeEntity.class);
+        query.setParameter("carId", carEntity.getId());
         query.setParameter("agencyId", agencyEntity.getId());
         return query.getResultList();
     }
 
     @Override
-    public List<EmployeeEntity> findAllEmployeeFromOneAgencyForSpecificCar(CarEntity carEntity) {
-        TypedQuery<EmployeeEntity> query = entityManager.createQuery(
-                "select employee from EmployeeEntity employee where employee.carEntitySet=:carId '%')", EmployeeEntity.class);
-        query.setParameter("carId", carEntity.getId());
-        return query.getResultList();
-    }
-
-    @Override
-    public void addCarToEmployee(CarEntity carEntity, EmployeeEntity employeeEntity) {
-        TypedQuery<EmployeeEntity> query = entityManager.createQuery(
-                "select employee from EmployeeEntity e where employeeEntity.id =:id '%')", EmployeeEntity.class);
-        query.setParameter("id", employeeEntity.getId());
-        EmployeeEntity foundEmployee = query.getSingleResult();
-        foundEmployee.getCarEntitySet().add(carEntity);
-        update(foundEmployee);
-    }
-
-    @Override
-    public List<CarEntity> findCarByEmployee(EmployeeEntity employeeEntity, CarEntity carEntity) {
+    public List<CarEntity> findCarByEmployee(EmployeeEntity employeeEntity) {
         Query query = entityManager.createQuery(
-                "select e.carEntitySet from EmployeeEntity e.carEntitySet ec where employeeEntity.id =:id '%' AND ec.id==:carId)", CarEntity.class);
+                "SELECT e.carEntitySet FROM EmployeeEntity e where e.id =:id");
         query.setParameter("id", employeeEntity.getId());
-        query.setParameter("carId", carEntity.getId());
         return query.getResultList();
+    }
+
+    @Override
+    public List<EmployeeEntity> findEmployeesBySearchCriteria(EmployeeSearchCriteriaTO employeeSearchCriteriaTO,String queryAsString) {
+        EmployeePositionEntity position = null;
+        if (employeeSearchCriteriaTO.getEmployeePositionId() != null) {
+            position = entityManager.getReference(EmployeePositionEntity.class, employeeSearchCriteriaTO.getEmployeePositionId());
+        }
+        CarEntity car = null;
+        if (employeeSearchCriteriaTO.getCarId() != null) {
+            car = entityManager.getReference(CarEntity.class, employeeSearchCriteriaTO.getCarId());
+        }
+        AgencyEntity agency = null;
+        if (employeeSearchCriteriaTO.getAgencyId() != null) {
+            agency = entityManager.getReference(AgencyEntity.class, employeeSearchCriteriaTO.getAgencyId());
+        }
+        TypedQuery<EmployeeEntity> query = entityManager.createQuery(queryAsString, EmployeeEntity.class);
+        if (position != null) {
+            query.setParameter("employeePosition", position);
+        }
+        if (car != null) {
+            query.setParameter("car", car);
+        }
+        if (agency != null) {
+            query.setParameter("agency", agency);
+        }
+        return query.getResultList();
+
     }
 }

@@ -1,12 +1,9 @@
 package com.capgemini.mappers;
 
-import com.capgemini.domain.AuthorEntity;
-import com.capgemini.domain.BookEntity;
 import com.capgemini.domain.EmployeePositionEntity;
 import com.capgemini.types.EmployeePositionTO.EmployeePositionTOBuilder;
 import com.capgemini.types.EmployeePositionTO;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 

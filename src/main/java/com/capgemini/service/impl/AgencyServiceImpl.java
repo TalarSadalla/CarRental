@@ -1,25 +1,20 @@
 package com.capgemini.service.impl;
 
 import com.capgemini.dao.AgencyDao;
-import com.capgemini.dao.BookDao;
 import com.capgemini.dao.EmployeeDao;
 import com.capgemini.domain.AgencyEntity;
-import com.capgemini.domain.BookEntity;
 import com.capgemini.domain.EmployeeEntity;
 import com.capgemini.mappers.AgencyMapper;
-import com.capgemini.mappers.BookMapper;
+import com.capgemini.mappers.CarMapper;
 import com.capgemini.mappers.EmployeeMapper;
 import com.capgemini.service.AgencyService;
-import com.capgemini.service.BookService;
 import com.capgemini.types.AgencyTO;
-import com.capgemini.types.BookTO;
 import com.capgemini.types.CarTO;
 import com.capgemini.types.EmployeeTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,9 +37,16 @@ public class AgencyServiceImpl implements AgencyService {
     }
 
     @Override
-    public AgencyTO findAgencyById(AgencyTO agencyTO) {
-        AgencyEntity agencyEntity = AgencyMapper.toAgencyEntity(agencyTO);
-        return AgencyMapper.toAgencyTO(agencyDao.findOne(agencyEntity.getId()));
+    public AgencyTO saveAgency(AgencyTO agencyTO) {
+        if (agencyTO == null) return null;
+        AgencyEntity agencyEntity = agencyDao.save(AgencyMapper.toAgencyEntity(agencyTO));
+        return AgencyMapper.toAgencyTO(agencyEntity);
+    }
+
+    @Override
+    public AgencyTO findAgencyById(long agencyId) {
+        AgencyTO agencyTO=AgencyMapper.toAgencyTO(agencyDao.findOne(agencyId));
+        return agencyTO;
     }
 
     @Override
@@ -84,15 +86,14 @@ public class AgencyServiceImpl implements AgencyService {
     }
 
     @Override
-    public Set<EmployeeTO> findAllEmployeesInAgency(AgencyTO agencyTO) {
-        if (agencyTO == null)
-            return null;
-        List<EmployeeEntity> employeeList=employeeDao.findAllEmployeeFromOneAgency(AgencyMapper.toAgencyEntity(agencyTO));
-        return EmployeeMapper.map2TOs((Set<EmployeeEntity>) employeeList);
+    public List<EmployeeTO> findAllEmployeesInAgency(Long agencyId) {
+        List<EmployeeEntity> employeeList=employeeDao.findAllEmployeeFromOneAgency(agencyId);
+        return EmployeeMapper.map2TOs(employeeList);
     }
 
     @Override
-    public Set<EmployeeTO> findAllEmployeesInAgencyForSpecificCar(EmployeeTO employeeTO, AgencyTO agencyTO, CarTO carTO) {
-        return null;
+    public List<EmployeeTO> findAllEmployeesInAgencyForSpecificCar(AgencyTO agencyTO, CarTO carTO) {
+        List<EmployeeEntity> employeeList=employeeDao.findAllEmployeeFromOneAgencyForSpecificCar(AgencyMapper.toAgencyEntity(agencyTO), CarMapper.toCarEntity(carTO));
+        return EmployeeMapper.map2TOs(employeeList);
     }
 }

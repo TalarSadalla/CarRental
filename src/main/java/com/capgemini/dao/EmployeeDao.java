@@ -1,13 +1,11 @@
 package com.capgemini.dao;
 
 import com.capgemini.domain.AgencyEntity;
-import com.capgemini.domain.BookEntity;
 import com.capgemini.domain.CarEntity;
 import com.capgemini.domain.EmployeeEntity;
+import com.capgemini.types.EmployeeSearchCriteriaTO;
 
-import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.Set;
 
 public interface EmployeeDao extends Dao<EmployeeEntity, Long> {
 
@@ -25,12 +23,12 @@ public interface EmployeeDao extends Dao<EmployeeEntity, Long> {
 
     EmployeeEntity removeEmployeeFromAgency(EmployeeEntity employeeEntity);
 
-    List<EmployeeEntity> findAllEmployeeFromOneAgency(AgencyEntity agencyEntity);
+    List<EmployeeEntity> findAllEmployeeFromOneAgency(Long agencyId);
 
-    List<EmployeeEntity> findAllEmployeeFromOneAgencyForSpecificCar(CarEntity carEntity);
+    List<EmployeeEntity> findAllEmployeeFromOneAgencyForSpecificCar(AgencyEntity agencyEntity, CarEntity carEntity);
 
-    List<CarEntity> findCarByEmployee(EmployeeEntity employeeEntity, CarEntity carEntity);
+    List<CarEntity> findCarByEmployee(EmployeeEntity employeeEntity);
 
-    void addCarToEmployee(CarEntity carEntity, EmployeeEntity employeeEntity);
+    List<EmployeeEntity> findEmployeesBySearchCriteria(EmployeeSearchCriteriaTO employeeSearchCriteriaTO,String queryAsString);
 
 }

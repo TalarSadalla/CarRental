@@ -6,9 +6,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "AGENCY")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@EntityListeners({OnCreateListener.class, OnUpdateListener.class})
-public class AgencyEntity extends AbstractEntity{
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@EntityListeners({OnCreateListener.class , OnUpdateListener.class})
+//extends AbstractEntity
+public class AgencyEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,6 +29,8 @@ public class AgencyEntity extends AbstractEntity{
     public Long getId() {
         return id;
     }
+
+
 
     public String getContact() {
         return contact;

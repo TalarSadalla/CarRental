@@ -22,9 +22,9 @@ public interface CarService {
 
     boolean addCarToEmployee(CarTO carTO, EmployeeTO employeeTO);
 
-    Set<CarTO> findCarByTypeAndBrand(CarTO carTO);
+    List<CarTO> findCarByTypeAndBrand(CarTO carTO);
 
-    Set<CarTO> findCarByType(CarTO carTO);
+    List<CarTO> findCarByType(CarTO carTO);
 
-    Set<CarTO> findCarByEmployee(EmployeeTO employeeTO, CarTO carTO);
+    List<CarTO> findCarByEmployee(EmployeeTO employeeTO);
 }

@@ -8,9 +8,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "EMPLOYEE")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@EntityListeners({OnCreateListener.class, OnUpdateListener.class})
-public class EmployeeEntity  extends AbstractEntity{
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@EntityListeners({OnCreateListener.class , OnUpdateListener.class})
+//extends AbstractEntity
+public class EmployeeEntity{
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -47,6 +48,10 @@ public class EmployeeEntity  extends AbstractEntity{
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

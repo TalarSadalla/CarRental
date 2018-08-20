@@ -1,18 +1,18 @@
 package com.capgemini.service;
 
 import com.capgemini.types.AgencyTO;
-import com.capgemini.types.BookTO;
 import com.capgemini.types.CarTO;
 import com.capgemini.types.EmployeeTO;
 
 import java.util.List;
-import java.util.Set;
 
 public interface AgencyService {
 
     boolean addAgency(AgencyTO agencyTO);
 
-    AgencyTO findAgencyById(AgencyTO agencyTO);
+    AgencyTO saveAgency(AgencyTO agencyTO);
+
+    AgencyTO findAgencyById(long agencyId);
 
     boolean deleteAgency(AgencyTO agencyTO);
 
@@ -22,8 +22,8 @@ public interface AgencyService {
 
     EmployeeTO deleteEmployeeFromAgency(EmployeeTO employeeTO);
 
-    Set<EmployeeTO> findAllEmployeesInAgency(AgencyTO agencyTO);
+    List<EmployeeTO> findAllEmployeesInAgency(Long agencyId);
 
-    Set<EmployeeTO> findAllEmployeesInAgencyForSpecificCar(EmployeeTO employeeTO, AgencyTO agencyTO, CarTO carTO);
+    List<EmployeeTO> findAllEmployeesInAgencyForSpecificCar(AgencyTO agencyTO, CarTO carTO);
 
 }

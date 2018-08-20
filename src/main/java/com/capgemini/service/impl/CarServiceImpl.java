@@ -3,6 +3,7 @@ package com.capgemini.service.impl;
 import com.capgemini.dao.CarDao;
 import com.capgemini.dao.EmployeeDao;
 import com.capgemini.domain.CarEntity;
+import com.capgemini.domain.EmployeeEntity;
 import com.capgemini.mappers.CarMapper;
 import com.capgemini.mappers.EmployeeMapper;
 import com.capgemini.service.CarService;
@@ -68,12 +69,16 @@ public class CarServiceImpl implements CarService {
     @Override
     public boolean addCarToEmployee(CarTO carTO, EmployeeTO employeeTO) {
         if (carTO == null || employeeTO == null) return false;
-        employeeDao.addCarToEmployee(CarMapper.toCarEntity(carTO), EmployeeMapper.toEmployeeEntity(employeeTO));
+        EmployeeEntity employeeEntity=EmployeeMapper.toEmployeeEntity(employeeTO);
+        CarEntity carEntity=CarMapper.toCarEntity(carTO);
+        employeeEntity.getCarEntitySet().add(CarMapper.toCarEntity(carTO));
+        employeeDao.update(employeeEntity);
+        carDao.update(carEntity);
         return true;
     }
 
     @Override
-    public Set<CarTO> findCarByTypeAndBrand(CarTO carTO) {
+    public List<CarTO> findCarByTypeAndBrand(CarTO carTO) {
         if (carTO == null) return null;
         CarEntity carEntity=CarMapper.toCarEntity(carTO);
         List<CarEntity> carList=carDao.findByTypeAndBrand(carEntity.getCarType(),carEntity.getBrand());
@@ -81,7 +86,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Set<CarTO> findCarByType(CarTO carTO) {
+    public List<CarTO> findCarByType(CarTO carTO) {
         if (carTO == null) return null;
         CarEntity carEntity=CarMapper.toCarEntity(carTO);
         List<CarEntity> carList=carDao.findByType(carEntity.getCarType());
@@ -89,10 +94,11 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Set<CarTO> findCarByEmployee(EmployeeTO employeeTO, CarTO carTO) {
-        if (carTO == null) return null;
-        CarEntity carEntity=CarMapper.toCarEntity(carTO);
-        List<CarEntity> carList=employeeDao.findCarByEmployee(EmployeeMapper.toEmployeeEntity(employeeTO), CarMapper.toCarEntity(carTO));
+    public List<CarTO> findCarByEmployee(EmployeeTO employeeTO) {
+        if (employeeTO == null) return null;
+        EmployeeEntity employeeEntity=EmployeeMapper.toEmployeeEntity(employeeTO);
+        List<CarEntity> carList=employeeDao.findCarByEmployee(employeeEntity);
+
         return CarMapper.map2TOs( carList);
     }
 }

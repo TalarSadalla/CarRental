@@ -41,6 +41,10 @@ public class RentalEntity extends AbstractEntity{
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Timestamp getBeginDate() {
         return beginDate;
     }

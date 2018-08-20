@@ -4,6 +4,7 @@ import com.capgemini.types.AgencyTO;
 import com.capgemini.types.AgencyTO.AgencyTOBuilder;
 import com.capgemini.types.CarTO;
 import com.capgemini.types.EmployeeTO;
+import com.capgemini.types.EmployeeTO.EmployeeTOBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +43,11 @@ public class AgencyServiceTest {
 
 		// when
 		agencyService.addAgency(agency);
-
+		AgencyTO savedAgency = agencyService.saveAgency(agency);
+		AgencyTO selectedAgency=agencyService.findAgencyById(savedAgency.getId());
 		// then
 		assertTrue(agencyService.addAgency(agency));
-		assertEquals("660461470",agencyService.findAgencyById(agency).getContact());
-		assertEquals(java.util.Optional.of(1),agencyService.findAgencyById(agency).getId());
+		assertEquals("660461470",selectedAgency.getContact());
 	}
 
 	@Test
@@ -70,13 +71,13 @@ public class AgencyServiceTest {
 		agencyService.addAgency(agency);
 
 		EmployeeTO employeeTO1 = new EmployeeTO.EmployeeTOBuilder().withName("Talar").withSurname("Sadalla")
-				.withDateOfBirth(new Timestamp(employeeDateOfBirth)).withAgencyTO(agency).build();
+				.withDateOfBirth(new Timestamp(employeeDateOfBirth)).build();
 
 		EmployeeTO employeeTO2 = new EmployeeTO.EmployeeTOBuilder().withName("Marcin").withSurname("Wojtowicz")
-				.withDateOfBirth(new Timestamp(employeeDateOfBirth)).withAgencyTO(agency).build();
+				.withDateOfBirth(new Timestamp(employeeDateOfBirth)).build();
 
 		EmployeeTO employeeTO3 = new EmployeeTO.EmployeeTOBuilder().withName("Arek").withSurname("Mila")
-				.withDateOfBirth(new Timestamp(employeeDateOfBirth)).withAgencyTO(agency2).build();
+				.withDateOfBirth(new Timestamp(employeeDateOfBirth)).build();
 
 		//when
 
@@ -84,11 +85,24 @@ public class AgencyServiceTest {
 		EmployeeTO savedEmployee2=employeeService.saveEmployee(employeeTO2);
 		EmployeeTO savedEmployee3=employeeService.saveEmployee(employeeTO3);
 
+		AgencyTO savedAgency=agencyService.saveAgency(agency);
+		AgencyTO savedAgency2=agencyService.saveAgency(agency2);
+
+		EmployeeTO updatedEmployee1=new EmployeeTO.EmployeeTOBuilder().withId(savedEmployee1.getId()).withName(savedEmployee1.getName()).withSurname(savedEmployee1.getSurname())
+				.withDateOfBirth(savedEmployee1.getDateOfBirth()).withAgencyTO(savedAgency).build();
+		EmployeeTO updatedEmployee2=new EmployeeTO.EmployeeTOBuilder().withId(savedEmployee2.getId()).withName(savedEmployee2.getName()).withSurname(savedEmployee2.getSurname())
+				.withDateOfBirth(savedEmployee2.getDateOfBirth()).withAgencyTO(savedAgency).build();
+		EmployeeTO updatedEmployee3=new EmployeeTO.EmployeeTOBuilder().withId(savedEmployee3.getId()).withName(savedEmployee3.getName()).withSurname(savedEmployee3.getSurname())
+				.withDateOfBirth(savedEmployee3.getDateOfBirth()).withAgencyTO(savedAgency2).build();
+
+		EmployeeTO editedEmployee1= employeeService.editEmployee(updatedEmployee1);
+		EmployeeTO editedEmployee2= employeeService.editEmployee(updatedEmployee2);
+		EmployeeTO editedEmployee3= employeeService.editEmployee(updatedEmployee3);
 
 		//then
 
-		assertEquals(2,agencyService.findAllEmployeesInAgency(agency).size());
-		assertEquals(1,agencyService.findAllEmployeesInAgency(agency2).size());
+		assertEquals(2,agencyService.findAllEmployeesInAgency(savedAgency.getId()).size());
+		assertEquals(1,agencyService.findAllEmployeesInAgency(savedAgency2.getId()).size());
 
 	}
 

@@ -64,8 +64,8 @@ public class EmployeeServiceTest {
 
 		//then
 
-		assertEquals("Arek",employeeService.findEmployeeById(employeeTO3).getName());
-		assertEquals("Wojtowicz",employeeService.findEmployeeById(employeeTO2).getSurname());
+		assertEquals("Talar",employeeService.findEmployeeById(savedEmployee1.getId()).getName());
+		assertEquals("Wojtowicz",employeeService.findEmployeeById(savedEmployee2.getId()).getSurname());
 	}
 
 	@Test
@@ -101,11 +101,9 @@ public class EmployeeServiceTest {
 		EmployeeTO savedEmployee2=employeeService.saveEmployee(employeeTO2);
 		EmployeeTO savedEmployee3=employeeService.saveEmployee(employeeTO3);
 
-		employeeService.deleteEmployee(savedEmployee3);
-
 		//then
 
-		assertEquals(null,employeeService.findEmployeeById(savedEmployee3).getName());
+		assertTrue(employeeService.deleteEmployeeById(savedEmployee3.getId()));
 	}
 
 

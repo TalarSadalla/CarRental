@@ -203,7 +203,6 @@ public class CarServiceTest {
                 .withDateOfBirth(new Timestamp(employeeDateOfBirth)).build();
 
 
-
         CarTO car2 = new CarTOBuilder().withCarType("SEDAN").withBrand("Porsche").withColor("Blue").withEngineCapacity(1.6)
                 .withHorsepower(132).withMilleage(100.0).withProductionYear(new Timestamp(time)).build();
 
@@ -257,7 +256,7 @@ public class CarServiceTest {
         CarTO savedCar2 = carService.saveCar(car2);
         CarTO savedCar3 = carService.saveCar(car3);
 
-        Set<CarTO> selectedCarSet = carService.findCarByType(car1);
+        List<CarTO> selectedCarSet = carService.findCarByType(car1);
         // then
 
 
@@ -306,12 +305,11 @@ public class CarServiceTest {
         CarTO savedCar5 = carService.saveCar(car5);
         CarTO savedCar6 = carService.saveCar(car6);
 
-        Set<CarTO> selectedCarSet = carService.findCarByTypeAndBrand(car1);
+        List<CarTO> selectedCarSet = carService.findCarByTypeAndBrand(car3);
         // then
 
-
         assertEquals(2, selectedCarSet.size());
-        assertEquals("SEDAN", selectedCarSet.iterator().next().getCarType());
+        assertEquals("SUV", selectedCarSet.iterator().next().getCarType());
         assertEquals("Mazda", selectedCarSet.iterator().next().getBrand());
     }
 
@@ -385,14 +383,14 @@ public class CarServiceTest {
         carService.addCarToEmployee(savedCar3,savedEmployee3);
         carService.addCarToEmployee(savedCar2,savedEmployee3);
 
-        Set<CarTO> carList=carService.findCarByEmployee(savedEmployee1,savedCar3);
-        Set<CarTO> carList2=carService.findCarByEmployee(savedEmployee3,savedCar4);
+        List<CarTO> carList=carService.findCarByEmployee(savedEmployee1);
+        List<CarTO> carList2=carService.findCarByEmployee(savedEmployee3);
 
         // then
-        assertEquals(1, carList.size());
+        assertEquals(2, carList.size());
         assertEquals(0, carList2.size());
-        assertEquals("Mazda",carList.iterator().next().getBrand());
-        assertEquals("SUV",carList.iterator().next().getCarType());
+        assertEquals("Mazda",carList2.iterator().next().getBrand());
+        assertEquals("SUV",carList2.iterator().next().getCarType());
     }
 
 
