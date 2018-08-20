@@ -1,7 +1,10 @@
 package com.capgemini.service.impl;
 
+import com.capgemini.dao.AgencyDao;
 import com.capgemini.dao.EmployeeDao;
+import com.capgemini.domain.AgencyEntity;
 import com.capgemini.domain.EmployeeEntity;
+import com.capgemini.mappers.AgencyMapper;
 import com.capgemini.mappers.EmployeeMapper;
 import com.capgemini.service.EmployeeService;
 import com.capgemini.types.EmployeeSearchCriteriaTO;
@@ -21,6 +24,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeDao employeeDao;
+
+    @Autowired
+    AgencyDao agencyDao;
 
     @Override
     public boolean addEmployee(EmployeeTO employeeTO) {
@@ -57,12 +63,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeTO editEmployee(EmployeeTO employeeTO) {
         if (employeeTO == null) return null;
+        AgencyEntity agencyEntity = agencyDao.findOne(employeeTO.getAgencyTO().getId());
         EmployeeEntity employeeEntity = employeeDao.update(EmployeeMapper.toEmployeeEntity(employeeTO));
+        employeeEntity.setAgencyEntity(agencyEntity);
         return EmployeeMapper.toEmployeeTO(employeeEntity);
     }
 
     @Override
-    public List<EmployeeTO> findEmployeesBySearchCriteria(EmployeeSearchCriteriaTO employeeSearchCriteriaTO, String queryAsString) {
+    public List<EmployeeTO> findEmployeesBySearchCriteria(EmployeeSearchCriteriaTO employeeSearchCriteriaTO) {
         StringBuilder query = new StringBuilder();
         query.append("select e from EmployeeEntity e where ");
         boolean canAddAndFlag = false;

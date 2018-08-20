@@ -4,9 +4,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "EMPLOYEE_POSITION")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@EntityListeners({OnCreateListener.class, OnUpdateListener.class})
-public class EmployeePositionEntity extends AbstractEntity{
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@EntityListeners({OnCreateListener.class, OnUpdateListener.class})
+public class EmployeePositionEntity{
     private static final long serialVersionUID = 1L;
 
     @Id

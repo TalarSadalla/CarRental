@@ -19,6 +19,12 @@ public interface EmployeeService {
 
     EmployeeTO editEmployee(EmployeeTO employeeTO);
 
-    List<EmployeeTO> findEmployeesBySearchCriteria(EmployeeSearchCriteriaTO employeeSearchCriteriaTO, String queryAsString);
+    /**
+     * Function search for an employees that fulfill search criteria, which are
+     * AgencyId, EmployeePositionId and carId
+     * @param employeeSearchCriteriaTO consists of 3 arguments AgencyId, EmployeePositionId and carId
+     * @return gives a list of Employees that fulfill criteria
+     */
+    List<EmployeeTO> findEmployeesBySearchCriteria(EmployeeSearchCriteriaTO employeeSearchCriteriaTO);
 
 }

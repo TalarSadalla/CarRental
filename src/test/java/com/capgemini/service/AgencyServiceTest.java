@@ -69,6 +69,7 @@ public class AgencyServiceTest {
 		AgencyTO agency=new AgencyTOBuilder().withContact("660461470").build();
 		AgencyTO agency2=new AgencyTOBuilder().withContact("6850329").build();
 		agencyService.addAgency(agency);
+		agencyService.addAgency(agency2);
 
 		EmployeeTO employeeTO1 = new EmployeeTO.EmployeeTOBuilder().withName("Talar").withSurname("Sadalla")
 				.withDateOfBirth(new Timestamp(employeeDateOfBirth)).build();

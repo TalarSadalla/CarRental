@@ -16,12 +16,10 @@ public class EmployeeMapper {
 		if (employeeEntity == null)
 			return null;
 		AddressTO addressTO = AddressMapper.toAddressTO(employeeEntity.getAddressEntity());
-		AgencyTO agencyTO = AgencyMapper.toAgencyTO(employeeEntity.getAgencyEntity());
 		EmployeePositionTO employeePositionTO = EmployeePositionMapper.toEmployeePositionTO(employeeEntity.getEmployeePositionEntity());
-		//Set<CarTO> carTOs = CarMapper.map2TOs(employeeEntity.getCarEntitySet());
 		return new EmployeeTOBuilder().withId(employeeEntity.getId()).withName(employeeEntity.getName())
 				.withSurname(employeeEntity.getSurname()).withDateOfBirth(employeeEntity.getDateOfBirth())
-				.withAddressTO(addressTO).withAgencyTO(agencyTO).withEmployeePositionTO(employeePositionTO)
+				.withAddressTO(addressTO).withAgencyTO(AgencyMapper.toAgencyTO(employeeEntity.getAgencyEntity())).withEmployeePositionTO(employeePositionTO)
 				.build();
 	}
 
@@ -30,15 +28,12 @@ public class EmployeeMapper {
 			return null;
 		EmployeeEntity employeeEntity = new EmployeeEntity();
 		AddressEntity addressEntity = AddressMapper.toAddressEntity(employeeTO.getAddressTO());
-		AgencyEntity agencyEntity = AgencyMapper.toAgencyEntity(employeeTO.getAgencyTO());
 		EmployeePositionEntity employeePositionEntity = EmployeePositionMapper.toEmployeePositionEntity(employeeTO.getEmployeePositionTO());
-		//Set<CarEntity> carEntities =  CarMapper.map2Entities((employeeTO.getCarTOSet());
 		employeeEntity.setId(employeeTO.getId());
 		employeeEntity.setName(employeeTO.getName());
 		employeeEntity.setSurname(employeeTO.getSurname());
 		employeeEntity.setDateOfBirth(employeeTO.getDateOfBirth());
 		employeeEntity.setAddressEntity(addressEntity);
-		employeeEntity.setAgencyEntity(agencyEntity);
 		employeeEntity.setEmployeePositionEntity(employeePositionEntity);
 		return employeeEntity;
 	}
